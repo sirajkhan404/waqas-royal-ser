@@ -15,6 +15,17 @@ app.use(express.json())
 
 connectDB()
 
+app.use(cors({
+    origin: ["http://localhost:5173", "https://waqas-royal-fe-e1wq.vercel.app/"],
+    credentials: true
+}));
+
+// Serverless DB connection middleware
+app.use(async (req, res, next) => {
+    await connectDB()
+    next()
+})
+
 app.get("/", (req, res) => {
     const now = new Date().toLocaleString()
     console.log("now", now)
@@ -32,9 +43,11 @@ app.use("/api/orders", orders)
 app.use("/api/contact", contact)
 app.use("/api/stories", stories)
 
-const { PORT = 8000 } = process.env
-app.listen(PORT, (req, res) => {
-    console.log(`server is running on PORT ${PORT}`)
-})
+if (!process.env.VERCEL) {
+    const { PORT = 8000 } = process.env
+    app.listen(PORT, () => {
+        console.log(`server is running on PORT ${PORT}`)
+    })
+}
 
 module.exports = app
