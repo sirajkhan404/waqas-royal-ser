@@ -16,7 +16,7 @@ app.use(express.json())
 connectDB()
 
 app.use(cors({
-    origin: ["http://localhost:5173", "https://waqas-royal-fe.vercel.app"],
+    origin: ["http://localhost:5173", "https://waqas-royal-fe.vercel.app/"],
     credentials: true
 }));
 
